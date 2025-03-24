@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موسوعة القرآن الكريم</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="english.js" defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl; 
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        select.language {
+            margin-right: 15px;
+            padding: 5px;
+        }
+
+        button {
+            background-color: #000000;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #357ae8;
+        }
+
+        main {
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .catalog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .sura-item {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .sura-item:hover {
+            transform: scale(1.05);
+        }
+
+        .sura-item p {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        #audio-player {
+            margin-top: 20px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 999; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0, 0, 0, 0.8); 
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #caption {
+            text-align: center;
+            color: white;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+
+        </div>
+        <div class="header-right">
+            <select class="language" id="language-switcher">
+                <option value="ar" selected>العربية</option>
+                <option value="en">English</option>
+            </select>
+            <button class="login-btn" id="login-btn"></button>
+            <button class="signup-btn" id="signup-btn"></button>
+            <button class="menu-btn">☰</button>
+        </div>
+    </header>
+
+    <main>
+        <h1 id="title">موسوعة القرآن الكريم</h1>
+        <div class="catalog-grid" id="catalog-grid"></div>
+
+        <div id="audio-player" style="display: none;">
+            <audio id="audio" controls>
+                <source id="audio-source" src="" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <p id="audio-label"></p>
+            <button id="back-button">رجوع</button>
+        </div>
+    </main>
+
+  
+    <div id="image-modal" class="modal" style="display: none;">
+        <span class="close" id="modal-close">×</span>
+        <img class="modal-content" id="modal-image">
+        <div id="caption"></div>
+    </div>
+
+    <script type="module">
+        import surahNamesEnglish from './english.js';
+
+        const arabicContent = {
+            title: "موسوعة القرآن الكريم",
+            login: "تسجيل الدخول",
+            signup: "إنشاء حساب",
+        };
+
+        const englishContent = {
+            title: "Quran Encyclopedia",
+            login: "Login",
+            signup: "Sign Up",
+        };
+
+        const surahAudioData = {
+            1: { src: "https://audio.jukehost.co.uk/ENc64Sb5WOVuf2k0vzFrqubR9kWObpt8", duration: "0:02:00", image: "https://i.ibb.co/nqwPjXHC/Screenshot-2025-03-24-140714.png", caption: "صورة سورة الفاتحة" },
+            2: { src: "https://rr5---sn-4g5ednde.googlevideo.com/videoplayback?expire=1742841114&ei=ulDhZ_WIIofLvcAP8vW00Qo&ip=124.217.49.116&id=o-ACzFdaeqiMro1WDaoQhimt_KPzHkHS-n0qd_bCigHOKx&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&bui=AccgBcMnxbSj__25enjBcz_T9JF3omTRdy4XvcNOUQ4NmhlnM4AiX1QEGk3vCNviLPkMzWJ30pY3eFx9&vprv=1&svpuc=1&mime=audio%2Fmp4&ns=pxPfxj7BJ7AsSKGW_lzcXYUQ&rqh=1&gir=yes&clen=127592454&dur=7883.870&lmt=1740712308026478&keepalive=yes&lmw=1&c=TVHTML5&sefc=1&txp=4532534&n=q5MKy8ly2IlJ7w&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AJfQdSswRAIgFW4NgdlNePhiYiCJa8hxeXfQDc5KcADYN0Tmcc-ZP30CIH2duMbfjUMQ_H0nlcFXIY5_aIFpMo_Tg1Kc27fQMG_c&rm=sn-2aqu-hoasd7z&rrc=79,80&fexp=24350590,24350737,24350778,24350827,24350961,24351146,24351173,24351283,24351353,24351395,24351397,24351398,24351466,24351468&req_id=783cb88f9ca3a3ee&redirect_counter=2&cm2rm=sn-i3b6d76&cms_redirect=yes&cmsv=e&met=1742819534,&mh=hz&mip=2a09:bac5:326c:be::13:2c6&mm=34&mn=sn-4g5ednde&ms=ltu&mt=1742818114&mv=u&mvi=5&pl=45&rms=ltu,au&lsparams=met,mh,mip,mm,mn,ms,mv,mvi,pl,rms&lsig=AFVRHeAwRQIhAMyyM-JI1sWxaa63HI6_zPP1TEqbI6JMpwFGmTWDPpplAiA3RpDYPhgg6CgChsUni3pift8HOpm75EI_NpSLkCpOGQ%3D%3D", duration: "2:30:00", image: "https://i.ibb.co/27FHV976/Screenshot-2025-03-24-145501.png", caption: "صورة سورة البقرة" },
+            114: { src: "path/to/audiobooks/surah114.mp3", duration: "0:01:00", image: "", caption: "" },
+        };
+
+        const catalogGrid = document.getElementById('catalog-grid');
+        const titleElement = document.getElementById('title');
+        const loginButton = document.getElementById('login-btn');
+        const signupButton = document.getElementById('signup-btn');
+        const languageSwitcher = document.getElementById('language-switcher');
+        const audioPlayer = document.getElementById('audio-player');
+        const audioSource = document.getElementById('audio-source');
+        const audioLabel = document.getElementById('audio-label');
+        const audioElement = document.getElementById('audio');
+        const backButton = document.getElementById('back-button');
+
+        const modal = document.getElementById('image-modal');
+        const modalImage = document.getElementById('modal-image');
+        const modalCaption = document.getElementById('caption');
+        const modalClose = document.getElementById('modal-close');
+
+        const surahNamesArabic = {
+            1: "الفاتحة",
+            2: "البقرة",
+            3: "آل عمران",
+            4: "النساء",
+            5: "المائدة",
+            6: "الأنعام",
+            7: "الأعراف",
+            8: "الأنفال",
+            9: "التوبة",
+            10: "يونس",
+            11: "هود",
+            12: "يوسف",
+            13: "الرعد",
+            14: "إبراهيم",
+            15: "الحجر",
+            16: "النحل",
+            17: "الإسراء",
+            18: "الكهف",
+            19: "مريم",
+            20: "طه",
+            21: "الأنبياء",
+            22: "الحج",
+            23: "المؤمنون",
+            24: "النور",
+            25: "الفرقان",
+            26: "الشعراء",
+            27: "النمل",
+            28: "القصص",
+            29: "العنكبوت",
+            30: "الروم",
+            31: "لقمان",
+            32: "السجدة",
+            33: "الأحزاب",
+            34: "سبأ",
+            35: "فاطر",
+            36: "يس",
+            37: "الصافات",
+            38: "ص",
+            39: "الزمر",
+            40: "غافر",
+            41: "فصلت",
+            42: "الشورى",
+            43: "الزخرف",
+            44: "الدخان",
+            45: "الجاثية",
+            46: "الأحقاف",
+            47: "محمد",
+            48: "الفتح",
+            49: "الحجرات",
+            50: "ق",
+            51: "الذاريات",
+            52: "الطور",
+            53: "النجم",
+            54: "القمر",
+            55: "الرحمن",
+            56: "الواقعة",
+            57: "الحديد",
+            58: "المجادلة",
+            59: "الحشر",
+            60: "الممتحنة",
+            61: "الصف",
+            62: "الجمعة",
+            63: "المنافقون",
+            64: "التغابن",
+            65: "الطلاق",
+            66: "التحريم",
+            67: "الملك",
+            68: "القلم",
+            69: "الحاقة",
+            70: "المعارج",
+            71: "نوح",
+            72: "الجن",
+            73: "المزمل",
+            74: "المدثر",
+            75: "القيامة",
+            76: "الإنسان",
+            77: "المرسلات",
+            78: "النبأ",
+            79: "النازعات",
+            80: "عبس",
+            81: "التكوير",
+            82: "الإنفطار",
+            83: "المطففين",
+            84: "الإنشقاق",
+            85: "البروج",
+            86: "الطارق",
+            87: "الأعلى",
+            88: "الغاشية",
+            89: "الفجر",
+            90: "البلد",
+            91: "الشمس",
+            92: "الليل",
+            93: "الضحى",
+            94: "الإنشراح",
+            95: "التين",
+            96: "العلق",
+            97: "القدر",
+            98: "البينة",
+            99: "الزلزلة",
+            100: "العاديات",
+            101: "القارعة",
+            102: "التكاثر",
+            103: "العصر",
+            104: "الهمزة",
+            105: "الفيل",
+            106: "قريش",
+            107: "الماعون",
+            108: "الكوثر",
+            109: "الكافرون",
+            110: "النصر",
+            111: "المسد",
+            112: "الإخلاص",
+            113: "الفلق",
+            114: "الناس"
+        };
+
+        let currentSurahNumber = null;
+
+        function loadSurahNames(lang) {
+            catalogGrid.innerHTML = '';
+            const surahNames = lang === 'en' ? surahNamesEnglish : surahNamesArabic;
+            for (const [number, name] of Object.entries(surahNames)) {
+                const surahItem = document.createElement('div');
+                surahItem.classList.add('sura-item');
+                surahItem.innerHTML = `<p data-surah="${number}">${number} - ${name}</p>`;
+                catalogGrid.appendChild(surahItem);
+            }
+        }
+
+        function switchLanguage(lang) {
+            if (lang === "en") {
+                titleElement.textContent = englishContent.title;
+                loginButton.textContent = englishContent.login;
+                signupButton.textContent = englishContent.signup;
+            } else {
+                titleElement.textContent = arabicContent.title;
+                loginButton.textContent = arabicContent.login;
+                signupButton.textContent = arabicContent.signup;
+            }
+            loadSurahNames(lang);
+        }
+
+        function stopAudio() {
+            audioElement.pause();
+            audioElement.currentTime = 0;
+            audioPlayer.style.display = 'none';
+        }
+
+        function playSurahAudio(surahNumber) {
+            const audioData = surahAudioData[surahNumber];
+            if (audioData) {
+                audioSource.src = audioData.src;
+                audioElement.load();
+                audioElement.play();
+                currentSurahNumber = parseInt(surahNumber); 
+                audioLabel.textContent = `${surahNamesArabic[surahNumber]} (${audioData.duration})`;
+                audioPlayer.style.display = 'block';
+                catalogGrid.style.display = 'none';
+            }
+        }
+
+        const playNextSurah = () => {
+            if (currentSurahNumber !== null) {
+                const nextSurahNumber = currentSurahNumber + 1; 
+                if (surahAudioData[nextSurahNumber]) {
+                    stopAudio(); 
+                    playSurahAudio(nextSurahNumber); 
+                } else {
+                    stopAudio();
+                    currentSurahNumber = null; 
+                    catalogGrid.style.display = 'block'; 
+                }
+            }
+        };
+
+        audioElement.addEventListener('ended', playNextSurah); 
+
+        modalClose.addEventListener('click', closeModal);
+        backButton.addEventListener('click', () => {
+            stopAudio();
+            catalogGrid.style.display = 'block';
+        });
+
+        function closeModal() {
+            modal.style.display = 'none';
+            stopAudio();
+            catalogGrid.style.display = 'block';
+        }
+
+        function handleSurahClick(surahNumber) {
+            const audioData = surahAudioData[surahNumber];
+            if (audioData && audioData.image) { 
+                modal.style.display = 'block'; 
+                modalImage.src = audioData.image; 
+                modalCaption.innerHTML = audioData.caption; 
+
+                stopAudio(); 
+                playSurahAudio(surahNumber); 
+            } else {
+                stopAudio();
+                playSurahAudio(surahNumber);
+            }
+        }
+
+        modalClose.addEventListener('click', closeModal); 
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal(); 
+            }
+        });
+
+        catalogGrid.addEventListener('click', (event) => {
+            const surahElement = event.target.closest('p[data-surah]');
+            if (surahElement) {
+                const surahNumber = surahElement.getAttribute('data-surah');
+                handleSurahClick(surahNumber); 
+            }
+        });
+
+        loadSurahNames('ar');
+
+        languageSwitcher.addEventListener('change', (event) => {
+            switchLanguage(event.target.value); 
+        });
+    </script>
+</body>
+</html>

@@ -25,8 +25,6 @@ header {
     padding: 10px;
 }
 
-
-
 .header-right {
     display: flex;
     align-items: center;
@@ -89,13 +87,18 @@ main {
     border-radius: 10px;
     cursor: pointer;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    cursor: pointer; 
+    transition: background-color 0.2s ease-in-out; 
 }
 
+.sura-item:active {
+  background-color: #ddd; 
+}
 
 .sura-item:hover {
     background-color: #f5f5f5;
-    transform: translateY(-2px); /* تحريك التأيق أث دست */
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* تحسين الظل عند الدست */
+    transform: translateY(-2px); 
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); 
 }
 
 #audio-player {
@@ -105,7 +108,6 @@ main {
     color: #fff;
     text-align: center;
 }
-
 
 #audio {
     width: 100%;
@@ -118,9 +120,9 @@ main {
 
 #back-button {
     position: absolute;
-    bottom: -10px; /* تحريك الزر إلى الأسفل */
-    right: 50%; /* تحريك الزر إلى اليمين */
-    transform: translateX(50%); /* توسيط الزر أفقيًا */
+    bottom: -10px; 
+    right: 50%; 
+    transform: translateX(50%); 
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -128,7 +130,6 @@ main {
     color: #fff;
     cursor: pointer;
 }
-
 
 .modal {
     display: none;
@@ -200,7 +201,6 @@ main {
         </div>
     </main>
 
-  
     <div id="image-modal" class="modal" style="display: none;">
         <span class="close" id="modal-close">×</span>
         <img class="modal-content" id="modal-image">
@@ -212,12 +212,12 @@ main {
 
         const arabicContent = {
             title: "موسوعة القرآن الكريم",
-          
+
         };
 
         const englishContent = {
             title: "Quran Encyclopedia",
-          
+
         };
 
         const surahAudioData = {
@@ -455,12 +455,13 @@ main {
         });
 
         catalogGrid.addEventListener('click', (event) => {
-            const surahElement = event.target.closest('p[data-surah]');
-            if (surahElement) {
-                const surahNumber = surahElement.getAttribute('data-surah');
-                handleSurahClick(surahNumber); 
-            }
-        });
+  const surahElement = event.target.closest('p[data-surah]');
+  if (surahElement) {
+    const surahNumber = surahElement.getAttribute('data-surah');
+    handleSurahClick(surahNumber);
+    event.stopPropagation(); 
+  }
+});
 
         loadSurahNames('ar');
 

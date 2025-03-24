@@ -7,108 +7,167 @@
     <link rel="stylesheet" href="styles.css">
     <script type="module" src="english.js" defer></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            direction: rtl; 
-            margin: 0;
-            padding: 0;
-            background-color: #ffffff;
-            color: #333;
-        }
+      body {
+    font-family: Arial, sans-serif;
+    direction: rtl;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    color: #333;
+}
 
-        .logo img {
-            height: 50px;
-        }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-        }
-
-        select.language {
-            margin-right: 15px;
-            padding: 5px;
-        }
-
-        button {
-            background-color: #000000;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            margin-left: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #357ae8;
-        }
-
-        main {
-            padding: 20px;
-        }
-
-        h1 {
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-
-        .catalog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-        }
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
 
 
 
-        .sura-item p {
-            margin: 0;
-            cursor: pointer;
-        }
+.header-right {
+    display: flex;
+    align-items: center;
+}
 
-        #audio-player {
-            margin-top: 20px;
-            background: #fff;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
+.language {
+    margin-right: 20px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #444;
+    color: #fff;
+}
 
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 999; 
-            left: 0;
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0, 0, 0, 0.8); 
-        }
+.login-btn, .signup-btn {
+    margin-right: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #444;
+    color: #fff;
+    cursor: pointer;
+}
 
-        .modal-content {
-            margin: auto;
-            display: block;
-            width: 80%;
-            max-width: 700px;
-        }
+.menu-btn {
+    margin-right: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #444;
+    color: #fff;
+    cursor: pointer;
+}
 
-        .close {
-            position: absolute;
-            top: 10px;
-            right: 25px;
-            color: white;
-            font-size: 35px;
-            font-weight: bold;
-            cursor: pointer;
-        }
+main {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-        #caption {
-            text-align: center;
-            color: white;
-            padding: 10px 0;
-        }
+#title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.sura-item {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+
+.sura-item:hover {
+    background-color: #f5f5f5;
+    transform: translateY(-2px); /* تحريك التأيق أث دست */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2); /* تحسين الظل عند الدست */
+}
+
+#audio-player {
+    position: relative; 
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+}
+
+
+#audio {
+    width: 100%;
+    height: 40px;
+}
+
+#audio-label {
+    margin-bottom: 10px;
+}
+
+#back-button {
+    position: absolute;
+    bottom: -10px; /* تحريك الزر إلى الأسفل */
+    right: 50%; /* تحريك الزر إلى اليمين */
+    transform: translateX(50%); /* توسيط الزر أفقيًا */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #444;
+    color: #fff;
+    cursor: pointer;
+}
+
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    max-width: 800px;
+    max-height: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#caption {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #fff;
+}
+
     </style>
 </head>
 <body>
@@ -162,8 +221,8 @@
         };
 
         const surahAudioData = {
-            1: { src: "https://audio.jukehost.co.uk/ENc64Sb5WOVuf2k0vzFrqubR9kWObpt8", duration: "0:02:00", image: "https://i.ibb.co/nqwPjXHC/Screenshot-2025-03-24-140714.png", caption: "صورة سورة الفاتحة" },
-            2: { src: "https://rr5---sn-4g5ednde.googlevideo.com/videoplayback?expire=1742841114&ei=ulDhZ_WIIofLvcAP8vW00Qo&ip=124.217.49.116&id=o-ACzFdaeqiMro1WDaoQhimt_KPzHkHS-n0qd_bCigHOKx&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&bui=AccgBcMnxbSj__25enjBcz_T9JF3omTRdy4XvcNOUQ4NmhlnM4AiX1QEGk3vCNviLPkMzWJ30pY3eFx9&vprv=1&svpuc=1&mime=audio%2Fmp4&ns=pxPfxj7BJ7AsSKGW_lzcXYUQ&rqh=1&gir=yes&clen=127592454&dur=7883.870&lmt=1740712308026478&keepalive=yes&lmw=1&c=TVHTML5&sefc=1&txp=4532534&n=q5MKy8ly2IlJ7w&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AJfQdSswRAIgFW4NgdlNePhiYiCJa8hxeXfQDc5KcADYN0Tmcc-ZP30CIH2duMbfjUMQ_H0nlcFXIY5_aIFpMo_Tg1Kc27fQMG_c&rm=sn-2aqu-hoasd7z&rrc=79,80&fexp=24350590,24350737,24350778,24350827,24350961,24351146,24351173,24351283,24351353,24351395,24351397,24351398,24351466,24351468&req_id=783cb88f9ca3a3ee&redirect_counter=2&cm2rm=sn-i3b6d76&cms_redirect=yes&cmsv=e&met=1742819534,&mh=hz&mip=2a09:bac5:326c:be::13:2c6&mm=34&mn=sn-4g5ednde&ms=ltu&mt=1742818114&mv=u&mvi=5&pl=45&rms=ltu,au&lsparams=met,mh,mip,mm,mn,ms,mv,mvi,pl,rms&lsig=AFVRHeAwRQIhAMyyM-JI1sWxaa63HI6_zPP1TEqbI6JMpwFGmTWDPpplAiA3RpDYPhgg6CgChsUni3pift8HOpm75EI_NpSLkCpOGQ%3D%3D", duration: "2:30:00", image: "https://i.ibb.co/27FHV976/Screenshot-2025-03-24-145501.png", caption: "صورة سورة البقرة" },
+            1: { src: "https://audio.jukehost.co.uk/ENc64Sb5WOVuf2k0vzFrqubR9kWObpt8", duration: "0:00:46", image: "", caption: "صورة سورة الفاتحة" },
+            2: { src: "https://rr5---sn-4g5ednde.googlevideo.com/videoplayback?expire=1742841114&ei=ulDhZ_WIIofLvcAP8vW00Qo&ip=124.217.49.116&id=o-ACzFdaeqiMro1WDaoQhimt_KPzHkHS-n0qd_bCigHOKx&itag=140&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&bui=AccgBcMnxbSj__25enjBcz_T9JF3omTRdy4XvcNOUQ4NmhlnM4AiX1QEGk3vCNviLPkMzWJ30pY3eFx9&vprv=1&svpuc=1&mime=audio%2Fmp4&ns=pxPfxj7BJ7AsSKGW_lzcXYUQ&rqh=1&gir=yes&clen=127592454&dur=7883.870&lmt=1740712308026478&keepalive=yes&lmw=1&c=TVHTML5&sefc=1&txp=4532534&n=q5MKy8ly2IlJ7w&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cbui%2Cvprv%2Csvpuc%2Cmime%2Cns%2Crqh%2Cgir%2Cclen%2Cdur%2Clmt&sig=AJfQdSswRAIgFW4NgdlNePhiYiCJa8hxeXfQDc5KcADYN0Tmcc-ZP30CIH2duMbfjUMQ_H0nlcFXIY5_aIFpMo_Tg1Kc27fQMG_c&rm=sn-2aqu-hoasd7z&rrc=79,80&fexp=24350590,24350737,24350778,24350827,24350961,24351146,24351173,24351283,24351353,24351395,24351397,24351398,24351466,24351468&req_id=783cb88f9ca3a3ee&redirect_counter=2&cm2rm=sn-i3b6d76&cms_redirect=yes&cmsv=e&met=1742819534,&mh=hz&mip=2a09:bac5:326c:be::13:2c6&mm=34&mn=sn-4g5ednde&ms=ltu&mt=1742818114&mv=u&mvi=5&pl=45&rms=ltu,au&lsparams=met,mh,mip,mm,mn,ms,mv,mvi,pl,rms&lsig=AFVRHeAwRQIhAMyyM-JI1sWxaa63HI6_zPP1TEqbI6JMpwFGmTWDPpplAiA3RpDYPhgg6CgChsUni3pift8HOpm75EI_NpSLkCpOGQ%3D%3D", duration: "2:11:23", image: "", caption: "صورة سورة البقرة" },
             114: { src: "path/to/audiobooks/surah114.mp3", duration: "0:01:00", image: "", caption: "" },
         };
 

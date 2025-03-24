@@ -369,6 +369,9 @@ catalogGrid.addEventListener('touchstart', (event) => {
     }
 });
         let currentSurahNumber = null;
+        let currentAudioTime = 0;
+       
+  
 
         function loadSurahNames(lang) {
             catalogGrid.innerHTML = '';
@@ -401,17 +404,24 @@ catalogGrid.addEventListener('touchstart', (event) => {
         }
 
         function playSurahAudio(surahNumber) {
-            const audioData = surahAudioData[surahNumber];
-            if (audioData) {
-                audioSource.src = audioData.src;
-                audioElement.load();
-                audioElement.play();
-                currentSurahNumber = parseInt(surahNumber); 
-                audioLabel.textContent = `${surahNamesArabic[surahNumber]} (${audioData.duration})`;
-                audioPlayer.style.display = 'block';
-                catalogGrid.style.display = 'none';
-            }
+    const audioData = surahAudioData[surahNumber];
+    if (audioData) {
+        audioSource.src = audioData.src;
+        audioElement.load();
+        audioElement.play();
+        currentSurahNumber = parseInt(surahNumber); 
+        audioLabel.textContent = `${surahNamesArabic[surahNumber]} (${audioData.duration})`;
+        audioPlayer.style.display = 'block';
+        catalogGrid.style.display = 'none';
+
+        // Check if there's a stored time for this surah
+        const storedTime = localStorage.getItem(`surah-${surahNumber}-time`);
+        if (storedTime) {
+            audioElement.currentTime = parseFloat(storedTime);
         }
+    }
+}
+
 
         const playNextSurah = () => {
             if (currentSurahNumber !== null) {
@@ -477,6 +487,22 @@ catalogGrid.addEventListener('touchstart', (event) => {
         languageSwitcher.addEventListener('change', (event) => {
             switchLanguage(event.target.value); 
         });
+        audioElement.addEventListener('timeupdate', () => {
+    currentAudioTime = audioElement.currentTime;
+});
+backButton.addEventListener('click', () => {
+    stopAudio();
+
+    localStorage.setItem(`surah-${currentSurahNumber}-time`, currentAudioTime);
+    catalogGrid.style.display = 'block';
+});
+modalClose.addEventListener('click', () => {
+    stopAudio();
+    
+    localStorage.setItem(`surah-${currentSurahNumber}-time`, currentAudioTime);
+    modal.style.display = 'none';
+    catalogGrid.style.display = 'block';
+});
     </script>
 </body>
 </html>

@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>موسوعة القرآن الكريم</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js"></script>
+<script>
+    FastClick.attach(document.body);
+</script>
     <script type="module" src="english.js" defer></script>
     <style>
       body {
@@ -85,10 +89,7 @@ main {
     padding: 20px;
     border: 1px solid #ddd;
     border-radius: 10px;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-    cursor: pointer; 
-    transition: background-color 0.2s ease-in-out; 
+    touch-action: none;
 }
 
 .sura-item:active {
@@ -226,7 +227,6 @@ main {
             114: { src: "path/to/audiobooks/surah114.mp3", duration: "0:01:00", image: "", caption: "" },
         };
 
-        const catalogGrid = document.getElementById('catalog-grid');
         const titleElement = document.getElementById('title');
         const loginButton = document.getElementById('login-btn');
         const signupButton = document.getElementById('signup-btn');
@@ -236,7 +236,7 @@ main {
         const audioLabel = document.getElementById('audio-label');
         const audioElement = document.getElementById('audio');
         const backButton = document.getElementById('back-button');
-
+        const catalogGrid = document.getElementById('catalog-grid');
         const modal = document.getElementById('image-modal');
         const modalImage = document.getElementById('modal-image');
         const modalCaption = document.getElementById('caption');
@@ -359,6 +359,15 @@ main {
             114: "الناس"
         };
 
+catalogGrid.addEventListener('touchstart', (event) => {
+    const surahElement = event.target.closest('p[data-surah]');
+    if (surahElement) {
+        const surahNumber = surahElement.getAttribute('data-surah');
+        handleSurahClick(surahNumber);
+        event.stopPropagation();
+        event.preventDefault();
+    }
+});
         let currentSurahNumber = null;
 
         function loadSurahNames(lang) {
